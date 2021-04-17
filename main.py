@@ -4,11 +4,12 @@ import cv2
 import praw
 import os
 import requests
+import ctypes
 
 CLIENT_ID = "2nLO-3HsCYSvnA"
 SECRET_KEY = "nvL4z-THuNsikRjDPi6N4hKYxGtgMg"
 
-POST_SEARCH_AMOUNT = 5
+POST_SEARCH_AMOUNT = 1
 
 
 # Create directory if it doesn't exist to save images
@@ -31,7 +32,7 @@ reddit = praw.Reddit(
     user_agent="Wallpaper-Bot"
 )
 
-subreddit = reddit.subreddit("Wimmelbilder")
+# subreddit = reddit.subreddit("Wimmelbilder")
 
 f_final = open("sub_list.csv", "r")
 img_notfound = cv2.imread('imageNF.png')
@@ -74,4 +75,4 @@ for submission in subreddit.hot(limit=POST_SEARCH_AMOUNT):
             print(f"Image failed. {submission.url.lower()}")
             print(e)
 
-os.system("gsettings set org.gnome.desktop.background picture-uri file:////home/jonathan/Projects/Python/WallpaperAPI/images/Wimmelbilder-ml9ou2.png")
+ctypes.windll.user32.SystemParametersInfoW(20, 0, f"{image_path}{sub}-{submission.id}.png" , 0)
